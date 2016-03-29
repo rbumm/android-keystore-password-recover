@@ -13,6 +13,8 @@ public class AndroidKeystoreBrute
   throws Exception
   {
     String start = "A";
+    String knownstart = "";
+    String knownend = "";
     int method = 0;
     String keystore = "";
     String dict = "";
@@ -23,32 +25,49 @@ public class AndroidKeystoreBrute
     }
     for (int i = 0; i < args.length; i++) {
       switch (args[i]) {
-        case "-h":
+
+      case "-h":
         printhelp();
         return;
+
         case "-m":
         i++;
         method = Integer.parseInt(args[i]);
         break;
+
         case "-k":
         i++;
         keystore = args[i];
         break;
+
         case "-d":
         i++;
         dict = args[i];
         break;
+
         case "-p":
         permutations = true;
         break;
+
         case "-w":
         saveNewKeystore = true;
         break;
+
         case "-start":
         i++;
-        start = args[i];
-        
+        start = args[i];        
         break;
+
+        case "-knownstart":
+        i++;
+        knownstart = args[i];        
+        break;
+
+        case "-knownend":
+        i++;
+        knownend = args[i];        
+        break;
+        
         default:
         System.out.println("Dont know " + args[i]);
       }
@@ -62,7 +81,7 @@ public class AndroidKeystoreBrute
     
     if (method == 1) {
       
-      BrutePasswd.doit(keystore, start);
+      BrutePasswd.doit(keystore, start, knownstart, knownend);
     }
     
     if (method == 2) {
@@ -90,6 +109,8 @@ public class AndroidKeystoreBrute
     System.out.println("-d <path> dictionary (for method 2 and 3)");
     System.out.println("-w saves the certificate in a new Keystore with same passwort than key\r\n");
     System.out.println("-start <String> sets start String of the word (for method 1) \r\n");
+    System.out.println("-knownstart <String> start of password is known; start all words tested with <String> (for method 1) \r\n");
+    System.out.println("-knownend <String> end of password is known; append <String> to all words tested (for method 1) \r\n");
     System.out.println("-p use common replacements like '@' for 'a'(for method 3) WARNING - very slow!!\r\n");
     System.out.println("-h prints this helpscreen\r\n");
     
