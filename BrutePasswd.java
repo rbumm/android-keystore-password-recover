@@ -53,6 +53,13 @@ public class BrutePasswd extends Thread {
   static int testedPwds = 0;
   
   static char[] currPass;
+  static char[] currCompletePass;
+  static char[] cstr; 
+  
+  static String startfix; 
+  static String endfix; 
+  
+  
   
   static char[] alphabet = {
     'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K',
@@ -70,14 +77,21 @@ public class BrutePasswd extends Thread {
   }
   public void run(){
     char[] str = new char[1];
+    String pw; 
+    String cpw; 
+    
     while (!found) { 
       str = nextWord(str);
-      if(keyIsRight(str)){
+      pw = new String(str);
+      cpw = startfix + pw + endfix;
+      cstr = cpw.toCharArray(); 
+      currCompletePass = cstr; 
+      if(keyIsRight(cstr)){
         passwd = String.copyValueOf(str);
         found = true;
         //We are lucky
         System.out.println("Got Password!");
-        System.out.println("Password is: " + passwd + " for alias " + alias);
+        System.out.println("Password is: " + startfix + passwd + endfix + " for alias " + alias);
         
         try{
           if (AndroidKeystoreBrute.saveNewKeystore) {
@@ -93,13 +107,15 @@ public class BrutePasswd extends Thread {
   }
   public static void doit(String keystore) throws Exception {
     
-    doit(keystore,"A");
+    doit(keystore,"A","","");
   }
   
-  public static void doit(String keystore,String start) throws Exception {
+  public static void doit(String keystore,String start, String startknown, String endknown) throws Exception {
     
     char[] pass = new char[start.length()];  
     pass = start.toCharArray();
+    startfix = startknown; 
+    endfix = endknown; 
     
     InputStream in = new FileInputStream(keystore);
     currPass = pass;
@@ -141,6 +157,7 @@ public class BrutePasswd extends Thread {
   
   public synchronized static char[] nextWord(char[] str) {
     testedPwds++;
+    
     currPass =  nextWord(currPass, currPass.length-1);
     if (str.length != currPass.length) {
       str = new char[currPass.length];
