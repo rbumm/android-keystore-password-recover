@@ -22,6 +22,8 @@ java -jar AndroidKeystoreBrute.jar <args>
 * -d <path> dictionary (for method 2 and 3)
 * -p use common replacements like '@' for 'a'(for method 3) WARNING - very slow!! 
 * -start <String> sets the start String for the password (for brute force)
+* -knownstart <String> start of password is known; start all words tested with <String> (for method 1)
+* -knownend <String> end of password is known; append <String> to all words tested (for method 1)
 * -w writes a new keystore with same password than the key
 * -h prints helpscreen
 
